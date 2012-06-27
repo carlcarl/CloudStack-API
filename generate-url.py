@@ -2,30 +2,34 @@
 
 # by carlcarl
 
-import getopt, sys
+import getopt
+import sys
 import hmac
 import hashlib
 import base64
 import urllib
 
+
 def formattedCmd(api, cmd):
     s = 'apiKey=' + api + '&' + cmd
     return s
+
 
 def encypt(string, key):
     h = hmac.new(key, string, hashlib.sha1)
     return base64.b64encode(h.digest())
 
+
 def formattedUrl(baseUrl, api, cmd, signature):
-    url = baseUrl + '?' + formattedCmd(api, cmd) + '&' + urllib.urlencode({'signature': signature})# signature=' + urllib.quote(signature)
+    url = baseUrl + '?' + formattedCmd(api, cmd) + '&' + urllib.urlencode({'signature': signature})
     return url
+
 
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'u:a:s:', ['help', 'output='])
     except getopt.GetoptError, err:
         print str(err)
-        usage()
         sys.exit(2)
 
     baseUrl = 'http://*.*.*.*:8080/client/api'
@@ -49,4 +53,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
